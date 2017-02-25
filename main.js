@@ -5,40 +5,44 @@ var Room = require('Room');
 var CreepBase = require('CreepBase');
 var CreepScout = require('CreepScout');
 
-//ScoutHandler.setRoomHandler(RoomHandler);
+module.exports.loop = function () {
 
-// Init rooms
-for(var n in Game.rooms) {
-	var roomHandler = new Room(Game.rooms[n], RoomHandler);
-	RoomHandler.set(Game.rooms[n].name, roomHandler);
-};
+	//ScoutHandler.setRoomHandler(RoomHandler);
 
-// Load rooms
-var rooms = RoomHandler.getRoomHandlers();
-for(var n in rooms) {
-	var room = rooms[n];
-	room.loadCreeps();
-	room.populate();
+	// Init rooms
+	for(var n in Game.rooms) {
+		var roomHandler = new Room(Game.rooms[n], RoomHandler);
+		RoomHandler.set(Game.rooms[n].name, roomHandler);
+	};
 
-	console.log(
-		room.room.name + ' | ' +
-		'goals met:' +
-		room.population.goalsMet() +
-		', population: ' +
-		room.population.getTotalPopulation() + '/' + room.population.getMaxPopulation() +
-		' (' + room.population.getType('CreepBuilder').total + '/' +
-		room.population.getType('CreepMiner').total + '/' +
-		room.population.getType('CreepCarrier').total + '/' +
-		room.population.getType('CreepSoldier').total + 
-		'), ' +
-		'resources at: ' + parseInt( (room.depositManager.energy() / room.depositManager.energyCapacity())*100) +'%, ' +
-		'max resources: ' + room.depositManager.energyCapacity() +'u, ' +
-		'next death: ' + room.population.getNextExpectedDeath() +' ticks'
-	);
-};
+	// Load rooms
+	var rooms = RoomHandler.getRoomHandlers();
+	for(var n in rooms) {
+		var room = rooms[n];
+		room.loadCreeps();
+		room.populate();
 
-// Load scouts.
-//ScoutHandler.loadScouts();
-//ScoutHandler.spawnNewScouts();
+		console.log(
+			room.room.name + ' | ' +
+			'goals met:' +
+			room.population.goalsMet() +
+			', population: ' +
+			room.population.getTotalPopulation() + '/' + room.population.getMaxPopulation() +
+			' (' + room.population.getType('CreepBuilder').total + '/' +
+			room.population.getType('CreepMiner').total + '/' +
+			room.population.getType('CreepCarrier').total + '/' +
+			room.population.getType('CreepSoldier').total +
+			'), ' +
+			'resources at: ' + parseInt( (room.depositManager.energy() / room.depositManager.energyCapacity())*100) +'%, ' +
+			'max resources: ' + room.depositManager.energyCapacity() +'u, ' +
+			'next death: ' + room.population.getNextExpectedDeath() +' ticks'
+		);
+	};
 
-HelperFunctions.garbageCollection();
+	// Load scouts.
+	//ScoutHandler.loadScouts();
+	//ScoutHandler.spawnNewScouts();
+
+	HelperFunctions.garbageCollection();
+
+}
