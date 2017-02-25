@@ -2,7 +2,7 @@ var roleHarvester = require('role.Harvester');
 var roleUpgrader = require('role.Upgrader');
 
 module.exports.loop = function () {
-
+    // Clear out memory from deleted or dead creeps within the game.
     for(var name in Memory.creeps) {
         if(!Game.creeps[name]) {
             delete Memory.creeps[name];
@@ -10,12 +10,21 @@ module.exports.loop = function () {
         }
     }
 
+    /**
+     * Automatic Builder System
+     *
+     */
     var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
-    console.log('Harvesters: ' + harvesters.length);
+    var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
 
     if(harvesters.length < 2) {
         var newName = Game.spawns['Alpha'].createCreep([WORK,CARRY,MOVE], undefined, {role: 'harvester'});
         console.log('Spawning new harvester: ' + newName);
+    }
+
+    if(harvesters.length < 1) {
+        var newName = Game.spawns['Alpha'].createCreep([WORK,CARRY,MOVE], undefined, {role: 'upgrader'});
+        console.log('Spawning new upgrader: ' + newName);
     }
 
     if(Game.spawns['Alpha'].spawning) {
